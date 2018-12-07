@@ -1,0 +1,32 @@
+pipeline {
+    agent {
+	    label 'builder-vanilla-stretch'
+    }
+    
+    stages {
+	stage('before_install') {
+	    steps {
+		sh 'make -f .build.mk before_install'
+	    }
+	}
+
+	stage('install') {
+	    steps {
+		sh 'make -f .build.mk install'
+	    }
+	}
+
+	stage('script') {
+	    steps {
+		sh 'make -f .build.mk script'
+	    }
+	}
+
+	stage('after_success') {
+	    steps {
+		sh 'make -f .build.mk after_success'
+	    }
+	}
+
+    }
+}
