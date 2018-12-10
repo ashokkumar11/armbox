@@ -2,10 +2,16 @@ pipeline {
     agent {
 	    label 'builder-vanilla-stretch'
     }
+
+    environment {
+        ZDRIVE_USER = credentials('ZDRIVE_UID')
+	ZDRIVE_PASSWD = credentials('ZDRIVE_PASS')
+    }
     
     stages {
 	stage('before_install') {
 	    steps {
+		sh 'bash setup.sh'
 		sh 'make -f .build.mk before_install'
 	    }
 	}
@@ -21,12 +27,5 @@ pipeline {
 		sh 'make -f .build.mk script'
 	    }
 	}
-
-	stage('after_success') {
-	    steps {
-		sh 'make -f .build.mk after_success'
-	    }
-	}
-
     }
 }
